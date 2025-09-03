@@ -9,7 +9,7 @@ export default function LandingHeader() {
         <div className="bg-[#cafbe7] rounded-2xl">
           <div className="flex flex-col items-center lg:flex-row py-8 sm:px-6 lg:py-16">
             <div className="lg:pl-[100px] xl:pr-[70px] flex flex-col items-center lg:items-start justify-center max-w-[90%] mb-5 lg:mb-0">
-              <div className="text-[40px] xl:text-[54px] text-center lg:text-left font-semibold tracking-tight mb-5">
+              <div className="text-[40px] xl:text-[54px] text-center lg:text-left font-semibold tracking-tight mb-4 lg:mb-5">
                 The smart way to manage your{" "}
                 <span className="text-[#00bf91]">money</span>
               </div>

@@ -29,7 +29,7 @@ export default function Features() {
   ];
   return (
     <div className="max-w-[1440px] w-full m-auto">
-      <div className="py-10 px-6">
+      <div className="sm:py-10 px-3">
         <div className="text-[32px] md:text-[36px] lg:text-5xl text-center tracking-tight mb-6">
           See where you stand and how you can do better.
         </div>
@@ -37,7 +37,7 @@ export default function Features() {
         <div className="flex flex-wrap items-center gap-[30px] md:items-start justify-center md:justify-evenly mt-[56px] lg:mt-[80px] mb-[56px]">
           {offers.map((offer, id) => (
             <div
-              className="flex flex-col w-[75%] sm:w-[35%] md:w-[15%]"
+              className="flex pl-3 sm:pl-0 flex-col w-[100%] sm:w-[35%] md:w-[15%]"
               key={id}
             >
               <div className="flex md:flex-col items-center md:items-start">

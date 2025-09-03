@@ -31,7 +31,7 @@ export default function Insights() {
 
   return (
     <div className="max-w-[1440px] w-full m-auto ">
-      <div className="px-9 lg:px-6">
+      <div className="px-6">
         <div className="py-6 lg:py-10">
           <div className="text-[32px] md:text-[36px] lg:text-5xl text-center tracking-tight mb-6">
             Constantly <span className="text-[#00bf91]">on course.</span> Never
