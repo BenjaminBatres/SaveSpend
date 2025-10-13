@@ -2,10 +2,10 @@ import React from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoIosArrowDown } from "react-icons/io";
-import Image1 from "../../assets/pexels-artempodrez-5716001.jpg";
-import Image2 from "../../assets/istockphoto-1125578452-612x612.jpg";
-import Image3 from "../../assets/pexels-mikhail-nilov-6964107.jpg";
-import Image4 from "../../assets/pexels-karolina-grabowska-5900251.jpg";
+import Image1 from "../../assets/undraw_send-money_4qc7.svg";
+import Image2 from "../../assets/undraw_notify_rnwe.svg";
+import Image3 from "../../assets/undraw_focused_m9bj.svg";
+import Image4 from "../../assets/undraw_confident_9v38.svg";
 
 export default function InsightDescription({
   active,
@@ -27,8 +27,8 @@ export default function InsightDescription({
       <div className="w-full lg:w-fit">
         <div className="flex items-center justify-between">
           <div
-            className={`text-[26px] mb-6 ${
-              active === index ? "text-[#00bf91] mb-6" : "lg:mb-0"
+            className={`text-[26px] mb-6 mr-4 ${
+              active === index ? "text-[#00bf91] mb-6" : "lg:mb-0 text-[#2f4858]"
             }`}
           >
             {insight.title}
@@ -59,14 +59,14 @@ export default function InsightDescription({
                 <Image
                   src={images[index]}
                   alt="image"
-                  className="rounded-2xl border-5 border-[#00bf91]"
+                  className="rounded-2xl border-3 border-[#00bf91] max-h-[500px] w-full "
                 ></Image>
               </motion.div>
             </AnimatePresence>
           ) : null}
         </div>
         <div
-          className={`relative h-0 overflow-hidden transform transition-[height] duration-[.35s] ease lg:max-w-[450px] ${
+          className={`relative h-0 overflow-hidden transform transition-[height] duration-[.35s] ease lg:max-w-[450px] text-gray-800 ${
             active === index ? "h-[70px] sm:h-[50px]" : "h-0"
           }`}
         >
