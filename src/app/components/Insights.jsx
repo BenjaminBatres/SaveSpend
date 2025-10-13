@@ -33,17 +33,17 @@ export default function Insights() {
     <div className="max-w-[1440px] w-full m-auto ">
       <div className="px-6">
         <div className="py-6 lg:py-10">
-          <div className="text-[32px] md:text-[36px] lg:text-5xl text-center tracking-tight mb-6">
+          <div className="text-[32px] text-[#2f4858] md:text-[36px] lg:text-5xl text-center tracking-tight mb-6">
             Constantly <span className="text-[#00bf91]">on course.</span> Never
             fall behind.
           </div>
-          <div className="text-[19px] text-center pt-[19px]">
+          <div className="text-[19px] text-center pt-[19px] text-gray-800">
             Determine your goal and work toward achieving it.
           </div>
         </div>
         <div className="py-6 lg:py-10">
           <div className="flex flex-col items-center lg:items-start lg:flex-row ">
-            <div className="pb-[35px] lg:w-[50%] flex justify-center flex-col ">
+            <div className="pb-[35px] lg:w-[50%] flex justify-center flex-col">
               {insightsDescriptions.map((insight, index) => (
                 <InsightsDescription
                   key={index}

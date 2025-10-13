@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 export default function NavBar() {
@@ -27,12 +28,12 @@ export default function NavBar() {
         }`}
       >
         <div className="px-4 py-[18px] h-20 flex justify-between items-center">
-          <h1 className="text-4xl sm:text-6xl text-[#00bf91] tracking-tighter">
+          <div className="text-4xl sm:text-6xl text-[#00bf91] tracking-tighter">
             SaveSpend
-          </h1>
-          <button className="py-3 px-6 bg-[#00bf91] rounded-[50px] text-lg text-white tracking-tighter">
+          </div>
+          <Link href={'/get-started'} className="py-3 px-6 bg-[#00bf91] rounded-[50px] text-lg text-white tracking-tighter transition duration-300 hover:-translate-y-1">
             Get started
-          </button>
+          </Link>
         </div>
       </nav>
     </div>
