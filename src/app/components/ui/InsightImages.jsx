@@ -1,10 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Image1 from "../../assets/pexels-artempodrez-5716001.jpg";
-import Image2 from "../../assets/istockphoto-1125578452-612x612.jpg";
-import Image3 from "../../assets/pexels-mikhail-nilov-6964107.jpg";
-import Image4 from "../../assets/pexels-karolina-grabowska-5900251.jpg";
+import Image1 from "../../assets/undraw_send-money_4qc7.svg";
+import Image2 from "../../assets/undraw_notify_rnwe.svg";
+import Image3 from "../../assets/undraw_focused_m9bj.svg";
+import Image4 from "../../assets/undraw_confident_9v38.svg";
 export default function InsightImages({ active }) {
   const images = [Image1, Image2, Image3, Image4];
   return (
@@ -17,7 +17,7 @@ export default function InsightImages({ active }) {
       <Image
         src={images[active]}
         alt="image"
-        className="rounded-2xl border-5 border-[#00bf91]"
+        className="rounded-2xl border-4 border-[#00bf91] max-h-[430px] object-cover object-top"
       ></Image>
     </motion.div>
   );
