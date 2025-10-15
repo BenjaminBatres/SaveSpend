@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import BudgetImg from "../assets/undraw_transfer-money_h9s3.svg";
+import BudgetImg from "../../assets/undraw_transfer-money_h9s3.svg";
 import Link from "next/link";
 
 export default function LandingHeader() {

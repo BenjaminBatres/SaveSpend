@@ -1,0 +1,5 @@
+import React from "react";
+
+export default function SkeletonBox({ width, height, marginBottom, marginLeft, borderRadius }) {
+  return <div className="skeleton-box" style={{ width, height, marginBottom, marginLeft, borderRadius }}></div>;
+}

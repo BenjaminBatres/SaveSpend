@@ -1,10 +1,105 @@
-
-
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import "tailwindcss";
 
 body {
-  font-family: 'Fira Sans', sans-serif;
+  /* font-family: 'Fira Sans', sans-serif; */
+  font-family: "Poppins", sans-serif;
 }
 
-@import "tailwindcss";
+.separator {
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+}
+
+.separator:after,
+.separator:before {
+  content: "";
+  display: block;
+  flex-grow: 1;
+  height: 1px;
+  background: #bac8ce;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out forwards;
+}
+
+.animate-slide-down {
+  animation: slide-down 400ms ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 400ms ease;
+}
+
+.skeleton-box {
+  background-color: #e0e0e0;
+  position: relative;
+  overflow: hidden;
+  height: 1em;
+}
+
+.skeleton-box::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    left: 100%;
+  }
+}
+
+.vertical-scroll::-webkit-scrollbar {
+    height: 1rem;
+    width: 10px;
+  }
+  
+  .vertical-scroll::-webkit-scrollbar-thumb {
+  background: #2f4858;
+  border-radius: 100vw;
+}

@@ -1,8 +1,8 @@
 "use client";
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
-import InsightsImages from "./ui/InsightImages";
-import InsightsDescription from "./ui/InsightDescription";
+import InsightsImages from "../ui/InsightImages";
+import InsightsDescription from "../ui/InsightDescription";
 
 export default function Insights() {
   const [active, setActive] = useState(0);
