@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { IoSparkles } from "react-icons/io5";
 import { LuSend } from "react-icons/lu";
-import { useTypewriter } from "../components/useTypeWriter";
 import { motion } from "framer-motion";
 
 export default function ChatInterface() {
