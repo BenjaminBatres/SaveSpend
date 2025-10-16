@@ -95,7 +95,7 @@ export default function ChatInterface() {
         <textarea
           name=""
           id=""
-          placeholder="Rely to Assistant..."
+          placeholder="Reply to Assistant..."
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           className=" w-full whitespace-pre-wrap resize-none px-3.5 outline-none min-h-12"
