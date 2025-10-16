@@ -136,14 +136,11 @@ export default function page() {
                   <SkeletonBox height={30} width={"100%"} />
                 ) : (
                   <>
-                    <div className="flex justify-between items-center mb-3">
+                    <div className="flex xl:block 2xl:flex justify-between items-center mb-3">
                       <h2 className="text-lg font-extrabold text-[#2f4858]">
                         Account
                       </h2>
-                      <BsThreeDotsVertical
-                        className="text-2xl text-gray-500 hover:text-[#00bf91] cursor-pointer transition"
-                        onClick={() => setIsOpen(true)}
-                      />
+                      <button onClick={() => setIsOpen(true)} className="text-white font-semibold py-2 px-4 bg-[#00afa7] hover:bg-[#00988f] rounded-lg transition-all duration-300 cursor-pointer">Sign Out</button>
                     </div>
 
                     <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200">
@@ -152,10 +149,7 @@ export default function page() {
                         {userDisplayName}
                       </h3>
                     </div>
-
-                    {isOpen && (
-                      <SignOutModal isOpen={isOpen} setIsOpen={setIsOpen} />
-                    )}
+                    {isOpen && <SignOutModal setIsOpen={setIsOpen} />}
                   </>
                 )}
               </div>
