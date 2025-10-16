@@ -7,7 +7,7 @@ import { auth } from "../../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
-export default function AiPage() {
+export default function page() {
     const [isUserDisplayName, setIsUserDisplayName] = useState(true);
   const router = useRouter()
   useEffect(() => {
