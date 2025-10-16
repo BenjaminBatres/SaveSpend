@@ -120,7 +120,7 @@ export default function AccountForm({ setStep, setIsLogin, isLogin }) {
             </>
           )}
         </div>
-        <div className="sm:w-[450px] h-[550px]">
+        <div className="sm:w-[450px] h-[550px] px-8">
           <div className="flex flex-col items-center sm:items-end relative">
             <form
               className="flex flex-col gap-4 sm:w-[90%] px-1"
