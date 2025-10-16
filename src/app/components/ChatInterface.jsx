@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import { IoSparkles } from "react-icons/io5";
 import { LuSend } from "react-icons/lu";
