@@ -32,7 +32,7 @@ export default function Sidebar() {
       links: [
         "/dashboard/spendingplan",
         "/dashboard/goals",
-        "/dashboard/AiPage",
+        "/dashboard/ai",
       ],
     },
     // {

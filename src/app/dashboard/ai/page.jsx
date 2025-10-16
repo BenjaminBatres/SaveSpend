@@ -1,4 +1,5 @@
 "use client";
+export const dynamic = "force-dynamic";
 import React, { useEffect, useState } from "react";
 import ChatInterface from "../../components/ChatInterface";
 import Sidebar from "../../components/ui/Sidebar/Sidebar";
@@ -7,7 +8,7 @@ import { auth } from "../../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
-export default function page() {
+export default function ai() {
     const [isUserDisplayName, setIsUserDisplayName] = useState(true);
   const router = useRouter()
   useEffect(() => {

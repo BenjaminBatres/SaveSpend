@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState } from "react";
 import { IoSparkles } from "react-icons/io5";
 import { LuSend } from "react-icons/lu";
@@ -40,6 +40,13 @@ export default function ChatInterface() {
       setLoading(false);
     }
   }
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage(e);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-6 h-full p-4 sm:p-6 lg:p-8 rounded-2xl overflow-y-auto">
@@ -98,6 +105,7 @@ export default function ChatInterface() {
           id=""
           placeholder="Reply to Assistant..."
           value={userInput}
+          onKeyDown={handleKeyDown}
           onChange={(e) => setUserInput(e.target.value)}
           className=" w-full whitespace-pre-wrap resize-none px-3.5 outline-none min-h-12"
         ></textarea>
@@ -105,7 +113,11 @@ export default function ChatInterface() {
           <button
             type="submit"
             disabled={loading}
-            className={`h-10 w-10 flex justify-center items-center p-2 rounded-lg text-xl  text-white transition-all duration-300 ${userInput.length > 0 ? 'bg-[#00bf91] cursor-pointer' : 'bg-[#6c7698]/90 cursor-not-allowed'}`}
+            className={`h-10 w-10 flex justify-center items-center p-2 rounded-lg text-xl  text-white transition-all duration-300 ${
+              userInput.length > 0
+                ? "bg-[#00bf91] cursor-pointer"
+                : "bg-[#6c7698]/90 cursor-not-allowed"
+            }`}
           >
             <LuSend />
           </button>
