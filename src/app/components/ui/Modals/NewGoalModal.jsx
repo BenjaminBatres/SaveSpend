@@ -19,7 +19,7 @@ export default function NewGoalModal({ setIsOpen }) {
             Create a goal
           </div>
           <button
-            className="bg-[#00afa7]/50 rounded-full text-white hover:bg-[#00afa7] transition-all duration-300 text-2xl cursor-pointer "
+            className="bg-[#00afa7]/50 rounded-full text-white hover:bg-[#00afa7] transition-all duration-300 text-2xl cursor-pointer"
             onClick={() => setIsOpen(false)}
           >
             <IoMdClose />

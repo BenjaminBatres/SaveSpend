@@ -21,11 +21,13 @@ import SkeletonDashboardGoalCard from "../components/ui/SkeletonState/SkeletonDa
 import SignOutModal from "../components/ui/Modals/SignOutModal";
 // Icon
 import { BsThreeDotsVertical } from "react-icons/bs";
+
 // Firebase
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 export default function page() {
   const [userDisplayName, setUserDisplayName] = useState("");
   const [userExpenses, setUserExpenses] = useState([]);
@@ -36,6 +38,7 @@ export default function page() {
   const [usersSubscriptions, setUsersSubscriptions] = useState([]);
   const [usersGoals, setUsersGoals] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const router = useRouter();
 
   function totalExpenses(items) {
@@ -140,7 +143,18 @@ export default function page() {
                       <h2 className="text-lg font-extrabold text-[#2f4858]">
                         Account
                       </h2>
-                      <button onClick={() => setIsOpen(true)} className="text-white font-semibold py-2 px-4 bg-[#00afa7] hover:bg-[#00988f] rounded-lg transition-all duration-300 cursor-pointer">Sign Out</button>
+                      <button className="relative  cursor-pointer" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                        <BsThreeDotsVertical className="text-2xl"/>
+                      <div className={`${isMenuOpen ? 'animate-fade-in' : 'hidden animate-fade-out'} absolute top-0 right-5 bg-[#00afa7] flex flex-col text-white w-40 py-2 rounded-md shadow-lg `}>
+    
+                        <button onClick={() => setIsOpen(true)} className="py-1.5 px-4 text-sm min-h-8 font-semibold hover:bg-[#00988f] transition-all duration-300 cursor-pointer">Sign Out</button>
+                        <Link href={'/dashboard/settings'} className="py-1.5 px-4 text-sm min-h-8 font-semibold hover:bg-[#00988f] transition-all duration-300">Account Settings</Link>
+
+
+  
+                      </div>
+                      </button>
+                      {/* <button onClick={() => setIsOpen(true)} className="text-white font-semibold py-2 px-4 bg-[#00afa7] hover:bg-[#00988f] rounded-lg transition-all duration-300 cursor-pointer">Sign Out</button> */}
                     </div>
 
                     <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200">

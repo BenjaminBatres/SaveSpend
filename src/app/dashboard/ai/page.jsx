@@ -34,7 +34,7 @@ export default function ai() {
       <>
       <Sidebar />
       <Header title={"AI Assistant"} />
-      <main className="bg-[#f1f5f9] min-h-screen px-4 pt-10 mt-0 lg:mt-0 lg:ml-[70px] transition-all duration-500 ">
+      <main className="bg-[#f1f5f9] min-h-screen px-4 pt-10 mt-0 lg:mt-0 lg:ml-[70px] transition-all duration-500">
         <div className="bg-[#e6efff] p-3 max-w-[1200px] mx-auto w-full">
           <ChatInterface />
         </div>

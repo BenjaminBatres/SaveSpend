@@ -5,19 +5,15 @@ import Link from "next/link";
 // Components
 import SidebarGroup from "./SidebarGroup";
 import SidebarIcon from "./SidebarIcon";
+import BottomSidebarIcons from "../Sidebar/BottomSidebarIcons";
 // Icons
 import Logo from "../../../assets/SaveSpend-logo.png";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { MdOutlineMonetizationOn } from "react-icons/md";
 import { GoGoal } from "react-icons/go";
-import { PiChartLineUp } from "react-icons/pi";
-import { PiChartBarLight } from "react-icons/pi";
-import { AiOutlineFileSearch } from "react-icons/ai";
-import { LuChartPie } from "react-icons/lu";
 import { RiChatAiLine } from "react-icons/ri";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
-import { PiSignOutFill } from "react-icons/pi";
 import SignOutModal from "../Modals/SignOutModal";
 
 export default function Sidebar() {
@@ -39,32 +35,18 @@ export default function Sidebar() {
   return (
     <>
       <div className="hidden lg:flex flex-col fixed left-0 top-0 z-70 h-full lg:w-[70px] pt-4 pb-16 shadow-xl ">
-        <div>
-          <Link href={"/dashboard"} className="mb-7 px-3">
-            <Image src={Logo} alt="logo" className="rounded-[50%]"></Image>
-          </Link>
-          {groups.map((group, id) => (
-            <SidebarGroup
-              key={id}
-              icons={group.icons}
-              labels={group.labels}
-              links={group.links}
-            />
-          ))}
-        </div>
-        <button
-          className="flex justify-center relative group"
-          onClick={() => setIsOpen(true)}
-        >
-          <PiSignOutFill className="text-xl lg:text-base h-6 text-[#00bf91] lg:w-full" />
-          <div
-            className="absolute left-full ml-2 top-1/2 -translate-y-1/2 hidden lg:group-hover:block 
-        bg-gray-800 text-xs text-white px-2 py-1 rounded shadow-lg whitespace-nowrap border"
-          >
-            Sign Out
-          </div>
-        </button>
-        {isOpen && <SignOutModal setIsOpen={setIsOpen} />}
+        <Link href={"/dashboard"} className="mb-7 px-3">
+          <Image src={Logo} alt="logo" className="rounded-[50%]"></Image>
+        </Link>
+        {groups.map((group, id) => (
+          <SidebarGroup
+            key={id}
+            icons={group.icons}
+            labels={group.labels}
+            links={group.links}
+          />
+        ))}
+        <BottomSidebarIcons />
       </div>
 
       {/* Mobile Topbar */}
@@ -100,16 +82,7 @@ export default function Sidebar() {
               />
             ))
           )}
-          <button
-            className="flex cursor-pointer"
-            onClick={() => setIsOpen(true)}
-          >
-            <div className={`w-[3px] h-full mr-4 lg:w-0 lg:mr-0`}></div>
-            <PiSignOutFill className="text-xl lg:text-base h-6 text-[#00bf91] lg:w-full" />
-            <div className="ml-3 lg:hidden hover:text-[#00bf91] transition-all duration-300">
-              Sign Out
-            </div>
-          </button>
+          <BottomSidebarIcons setIsOpen={setIsOpen} />
         </div>
       </div>
       {isOpen && <SignOutModal setIsOpen={setIsOpen} />}
