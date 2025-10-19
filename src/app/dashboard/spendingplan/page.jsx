@@ -277,7 +277,7 @@ export default function page() {
 
                   {isOpen && (
                     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-71">
-                      <div className="relative max-w-[550px] w-[95%] mx-auto bg-white rounded-xl animate-slide-up -translate-y-30">
+                      <div className="relative max-w-[550px] w-[95%] mx-auto bg-white rounded-xl animate-slide-up -translate-y-20">
                         <div className="flex justify-between items-center p-4 bg-gray-200 rounded-t-xl">
                           <div className="text-lg">Add expense</div>
                           <button
