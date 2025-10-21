@@ -7,6 +7,10 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+.no-scroll {
+  overflow-y: hidden;
+}
+
 .separator {
   display: flex;
   align-items: center;

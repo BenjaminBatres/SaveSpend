@@ -30,7 +30,7 @@ export default function AddExpensesModal({
         <span className="ml-2 text-sm text-gray-500">▼</span>
       </button>
       {open && (
-        <ul className="absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg z-9">
+        <ul className="absolute mt-1 w-[70%] bg-white border border-gray-300 rounded-md shadow-lg z-9">
           {options.map((opt) => (
             <li
               key={opt}

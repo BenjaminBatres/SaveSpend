@@ -8,6 +8,7 @@ import MonthlySpendsCard from "../../components/MonthlySpendsCard";
 import PlannedSpendingCard from "../../components/PlannedSendingCard";
 import AddExpenseModal from "../../components/ui/Modals/AddExpensesModal";
 import FinancePieChart from "../../components/FinancePieChart";
+import Header from "../../components/Header";
 // Firebase
 import { auth, db } from "../../firebase";
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
@@ -35,6 +36,15 @@ export default function page() {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
+
+  const toggleModal = () => {
+    if (isOpen) {
+      setIsOpen(false)
+      return document.body.classList.remove("no-scroll")
+    }
+    setIsOpen(true)
+    document.body.classList += " no-scroll"
+  }
 
   function totalExpenses(items) {
     const total = items.reduce(
@@ -165,11 +175,8 @@ export default function page() {
       ) : (
         <>
           <Sidebar />
-
-          <header className="ml-[70px] lg:h-[65px] lg:border-b border-b-gray-200  flex items-center px-6">
-            <div className="text-2xl font-semibold">Spending Plan</div>
-          </header>
-          <main className="bg-[#f1f5f9] md:h-screen px-4 py-10 mt-5 lg:mt-0 lg:ml-[70px] transition-all duration-500">
+          <Header title={"Spending Plan"}/>
+          <main className="bg-[#f1f5f9] h-screen px-4 py-10 mt-5 lg:mt-0 lg:ml-[70px] transition-all duration-500 no-scroll">
             <div className="flex flex-col-reverse md:flex-row gap-4 space-x-4">
               <div className="md:w-[40%] lg:w-[20%] flex items-center flex-col space-y-6">
                 <MonthlySpendsCard
@@ -265,7 +272,7 @@ export default function page() {
 
                   <div
                     className="border-2 border-gray-300 rounded-[10px] my-2 py-5 px-2 sm:px-4 flex items-center gap-2 cursor-pointer"
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={toggleModal}
                   >
                     <div className="text-3xl text-[#00afa7]">
                       <LuCirclePlus />
@@ -276,7 +283,7 @@ export default function page() {
                   </div>
 
                   {isOpen && (
-                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-71">
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-71 ">
                       <div className="relative max-w-[550px] w-[95%] mx-auto bg-white rounded-xl animate-slide-up -translate-y-20">
                         <div className="flex justify-between items-center p-4 bg-gray-200 rounded-t-xl">
                           <div className="text-lg">Add expense</div>
