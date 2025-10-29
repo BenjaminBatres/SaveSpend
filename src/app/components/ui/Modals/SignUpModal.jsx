@@ -104,7 +104,7 @@ export default function SplitSignUp({ onClose }) {
         transition={{ duration: 0.3 }}
         className="bg-white rounded-2xl mx-auto shadow-2xl w-[90%] max-w-3xl flex flex-col-reverse sm:flex-row"
       >
-        <div className="flex flex-col bg-[#00bf91]/10 justify-center items-center sm:w-1/2 p-8">
+        <div className="hidden sm:flex flex-col bg-[#00bf91]/10 justify-center items-center sm:w-1/2 p-8">
           <h2 className="text-3xl font-bold mb-4 text-center text-[#2f4858]">
             Join Us Today!
           </h2>
