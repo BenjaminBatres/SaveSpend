@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
 import {
   arrayRemove,
@@ -31,6 +31,13 @@ export default function DeleteBillModal({
       console.error("Error deleting expense:", err);
     }
   }
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
   if (!isOpen) return null; // Don't render when modal is closed
   return (

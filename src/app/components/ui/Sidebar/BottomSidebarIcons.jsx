@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PiSignOutFill } from "react-icons/pi";
 import Link from "next/link";
 import { GoGear } from "react-icons/go";
 import { usePathname } from "next/navigation";
+import { MdLogin } from "react-icons/md";
 
-export default function BottomSidebarIcons({ setIsOpen }) {
+export default function BottomSidebarIcons({ setIsOpen, isLogin }) {
   const pathname = usePathname();
+ 
   return (
     <div className="space-y-6 lg:space-y-2">
       <Link
@@ -26,6 +28,7 @@ export default function BottomSidebarIcons({ setIsOpen }) {
         </div>
         <div className="ml-3 lg:hidden">Settings</div>
       </Link>
+      {isLogin ? (
       <button
         className="flex relative group lg:w-full h-8 items-center hover:text-[#00bf91] transition-all duration-300"
         onClick={() => setIsOpen(true)}
@@ -40,6 +43,22 @@ export default function BottomSidebarIcons({ setIsOpen }) {
         </div>
         <div className="ml-3 lg:hidden">Sign Out</div>
       </button>
+      ) : (
+        <button
+        className="flex relative group lg:w-full h-8 items-center hover:text-[#00bf91] transition-all duration-300"
+        onClick={() => setIsOpen(true)}
+      >
+        <div className={`w-[3px] h-full mr-4 lg:w-0 lg:mr-0`}></div>
+        <MdLogin className="text-xl lg:text-base h-6 text-[#00bf91] lg:w-full" />
+        <div
+          className="absolute left-full ml-2 top-1/2 -translate-y-1/2 hidden lg:group-hover:block 
+        bg-gray-800 text-xs text-white px-2 py-1 rounded shadow-lg whitespace-nowrap border"
+        >
+          Sign Up
+        </div>
+        <div className="ml-3 lg:hidden">Sign Up</div>
+      </button>
+      )}
     </div>
   );
 }

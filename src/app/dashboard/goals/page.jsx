@@ -6,6 +6,7 @@ import Sidebar from "../../components/ui/Sidebar/Sidebar";
 import GoalCard from "../../components/ui/Cards/GoalCard";
 import NewGoalModal from "../../components/ui/Modals/NewGoalModal";
 import SkeletonGoalCard from "../../components/ui/SkeletonState/SkeletonGoalCard";
+import SignUpModal from "../../components/ui/Modals/SignUpModal";
 // Firebase
 import { LuCirclePlus } from "react-icons/lu";
 import { collection, onSnapshot } from "firebase/firestore";
@@ -17,6 +18,9 @@ export default function page() {
   const [userGoals, setUserGoals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUserDisplayName, setIsUserDisplayName] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
+  const [budgetData, setBudgetData] = useState(null);
+
   const router = useRouter();
 
   async function listenToUserGoals(user) {
@@ -37,18 +41,26 @@ export default function page() {
   }
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        if (!user.displayName) {
-          router.push("/get-started");
+    const data = JSON.parse(localStorage.getItem("budgetSetup"));
+    if (data) {
+      setBudgetData(data);
+      setIsLoading(false);
+      setIsUserDisplayName(false)
+    } else {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          if (!user.displayName) {
+            router.push("/get-started");
+          } else {
+            listenToUserGoals(user);
+            setIsUserDisplayName(false);
+            setIsLogin(true);
+          }
         } else {
-          listenToUserGoals(user);
-          setIsUserDisplayName(false);
+          router.push("/get-started");
         }
-      } else {
-        router.push("/get-started");
-      }
-    });
+      });
+    }
   }, []);
   return (
     <>
@@ -69,9 +81,15 @@ export default function page() {
                 <SkeletonGoalCard goalCards={6} />
               ) : (
                 <>
-                  {userGoals.map((goal) => (
-                    <GoalCard goal={goal} key={goal.id} />
-                  ))}
+                  {isLogin ? (
+                    <>
+                      {userGoals.map((goal) => (
+                        <GoalCard goal={goal} key={goal.id} />
+                      ))}
+                    </>
+                  ) : (
+                    <GoalCard budgetData={budgetData} isLogin={isLogin} />
+                  )}
                   <div
                     className="border border-gray-300 bg-white rounded-lg p-5 lg:p-3 h-[194px] sm:h-[222px] shadow-sm flex flex-col justify-center items-center cursor-pointer"
                     onClick={() => setIsOpen(!isOpen)}
@@ -85,7 +103,11 @@ export default function page() {
                   </div>
                 </>
               )}
-              {isOpen && <NewGoalModal setIsOpen={setIsOpen} />}
+              {isLogin ? (
+                <>{isOpen && <NewGoalModal setIsOpen={setIsOpen} />}</>
+              ) : (
+                <>{isOpen && <SignUpModal onClose={setIsOpen} />}</>
+              )}
             </div>
           </main>
         </>

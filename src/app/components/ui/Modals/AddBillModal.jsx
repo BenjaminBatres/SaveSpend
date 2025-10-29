@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // Input Compoments
 import BillsInput from "../Inputs/BillsInput";
 import SubscriptionInput from "../Inputs/SubscriptionInput";
@@ -21,7 +21,13 @@ export default function AddBillModal({
     <GiTakeMyMoney className="text-[#00afa7] text-6xl" />,
   ];
   const [isGoal, setIsGoal] = useState(false);
-
+  
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
   return (
     <div
       className={
@@ -84,7 +90,7 @@ export default function AddBillModal({
                   What are you saving for?
                 </div>
                 <GoalInput
-                  setIsModalOpen={setIsModalOpen}
+                  setIsOpen={setIsModalOpen}
                   isGoal={isGoal}
                   setIsGoal={setIsGoal}
                 />

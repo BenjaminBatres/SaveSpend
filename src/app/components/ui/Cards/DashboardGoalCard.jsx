@@ -7,9 +7,9 @@ import { FaUmbrellaBeach, FaCarAlt } from "react-icons/fa";
 import { GiLinkedRings } from "react-icons/gi";
 import { TbHomeDollar } from "react-icons/tb";
 
-export default function DashboardGoalCard({ goal }) {
+export default function DashboardGoalCard({ goal, budgetData }) {
   function displayIcon() {
-    const goalIcon = goal.goalIcon;
+    const goalIcon = goal?.goalIcon || budgetData?.goal;
     if (goalIcon === "Home") {
       return <TbHomeDollar />;
     } else if (goalIcon === "Wedding") {
@@ -31,18 +31,18 @@ export default function DashboardGoalCard({ goal }) {
     >
       <div className="flex gap-2 items-center mb-4">
         <div className="text-xl">{displayIcon()}</div>
-        <div className="text-xl">{goal.name}</div>
+        <div className="text-xl">{goal?.name || budgetData?.goal}</div>
       </div>
-      <ProgressBar value={(goal.savedSoFar / goal.goalAmount) * 100} />
+      <ProgressBar value={(goal?.savedSoFar / goal?.goalAmount || 0) * 100} />
       <div className="text-sm mb-4">
-        ${parseFloat(goal.savedSoFar).toLocaleString()} saved so far
+        ${parseFloat(goal?.savedSoFar || 0).toLocaleString()} saved so far
       </div>
 
       <div className="flex">
         <div className="flex-2">
           <div>
             <div className="text-2xl mb-1">
-              $0 of {parseFloat(goal.savedSoFar).toLocaleString()}
+              $0 of {parseFloat(goal?.savedSoFar || 0).toLocaleString()}
             </div>
             <div className="text-sm">Contributed this month</div>
           </div>
@@ -50,7 +50,7 @@ export default function DashboardGoalCard({ goal }) {
         <div className="flex-1">
           <div>
             <div className="text-2xl mb-1">
-              ${Math.round(goal.goalAmount - goal.savedSoFar).toLocaleString()}
+              ${Math.round(goal?.goalAmount - goal?.savedSoFar || budgetData?.goalCost).toLocaleString()}
             </div>
             <div className="text-sm">Left to save</div>
           </div>

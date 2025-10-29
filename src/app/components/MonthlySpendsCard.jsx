@@ -3,7 +3,14 @@ export default function MonthlySpendsCard({
   incomeAfter,
   active,
   onClick,
+  budgetData,
+  budgetDataExpense,
 }) {
+  function surveyIncomeAfter() {
+    return (
+      budgetData?.income - budgetData?.billCost - budgetData?.subscriptionCost
+    );
+  }
   function formatMoney(amount) {
     const abs = Math.abs(amount).toLocaleString(undefined, {
       minimumFractionDigits: 2,
@@ -19,7 +26,11 @@ export default function MonthlySpendsCard({
       }`}
       onClick={onClick}
     >
-      <div className="font-semibold text-2xl">{formatMoney(incomeAfter)}</div>
+      <div className="font-semibold text-2xl">
+        {formatMoney(
+          incomeAfter || surveyIncomeAfter() || budgetDataExpense * -1 || 0
+        )}
+      </div>
       <div>{title}</div>
     </div>
   );

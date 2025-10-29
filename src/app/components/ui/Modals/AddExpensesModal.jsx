@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function AddExpensesModal({
   setOpen,
@@ -19,6 +19,13 @@ export default function AddExpensesModal({
     "Groceries",
     "Other",
   ];
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
   return (
     <>
       <div className="text-sm mb-2">List a monthly recurring payment</div>

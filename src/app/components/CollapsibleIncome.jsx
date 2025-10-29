@@ -3,8 +3,9 @@ import UpdateIncomeModal from "../components/ui/Modals/UpdateIncomeModal";
 import { IoMdArrowDropright } from "react-icons/io";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import SignUpModal from "../components/ui/Modals/SignUpModal"
 
-export default function CollapsibleIncome({ income, userIncomeId }) {
+export default function CollapsibleIncome({ income, userIncomeId, budgetDataIncome, isLogin }) {
   const [active, setActive] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const userIncome = income.join("")
@@ -42,8 +43,7 @@ export default function CollapsibleIncome({ income, userIncomeId }) {
         </div>
         <div className="flex items-center gap-2">
           <div className="text-white sm:text-lg font-semibold">
-            ${(parseFloat(userIncome || 0).toLocaleString(undefined, {minimumFractionDigits: 2,}))}
-
+            ${(parseFloat(userIncome || budgetDataIncome || 0).toLocaleString(undefined, {minimumFractionDigits: 2,}))}
           </div>
           <div
             className="text-lg font-semibold cursor-pointer text-white"
@@ -70,11 +70,19 @@ export default function CollapsibleIncome({ income, userIncomeId }) {
           </button>
         </div>
       </div>
-      {isModalOpen && (
-        <UpdateIncomeModal
-          setIsModalOpen={setIsModalOpen}
-          userIncomeId={userIncomeId}
-        />
+      {isLogin ? (
+        <>
+        {isModalOpen && (
+          <UpdateIncomeModal
+            setIsModalOpen={setIsModalOpen}
+            userIncomeId={userIncomeId}
+          />
+        )}
+        </>
+      ) : (
+        <>
+        {isModalOpen && <SignUpModal onClose={setIsModalOpen}/>}
+        </>
       )}
     </div>
   );

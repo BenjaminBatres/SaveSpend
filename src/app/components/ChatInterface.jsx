@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IoSparkles } from "react-icons/io5";
 import { LuSend } from "react-icons/lu";
 import { motion } from "framer-motion";
+import AIMessage from "../components/AIMessage";
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState([]);
@@ -67,29 +68,28 @@ export default function ChatInterface() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
             className={`flex ${
-              msg.role === "user" ? "justify-end" : "justify-start"
+              msg.role === "user" ? "justify-end" : "sm:justify-start"
             }`}
           >
             <div
-              className={`rounded-lg p-4 max-w-[85%] sm:max-w-[70%] text-sm sm:text-base ${
+              className={`rounded-lg p-4 text-sm sm:text-base ${
                 msg.role === "user"
                   ? "bg-[#00bf91]/90 text-white"
-                  : " border border-gray-700 text-[#2f4858]"
+                  : "w-full border border-gray-700 text-[#2f4858]"
               }`}
             >
-              {msg.role === "assistant" && (
-                <div className="text-[#2f4858] italic font-semibold mb-1">
-                  AI Assistant
-                </div>
+              {msg.role === "assistant" ? (
+                <AIMessage content={msg.content} />
+              ) : (
+                msg.content
               )}
-              {msg.content}
             </div>
           </motion.div>
         ))}
 
         {/* Loading Indicator */}
         {loading && (
-          <div className="self-start text-gray-500 italic text-sm sm:text-base">
+          <div className="self-start text-gray-500 italic text-sm sm:text-base animate-pulse">
             Typing...
           </div>
         )}

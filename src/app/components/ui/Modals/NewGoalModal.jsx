@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import GoalInput from "../../ui/Inputs/GoalInput"
@@ -6,6 +6,12 @@ import GoalInput from "../../ui/Inputs/GoalInput"
 export default function NewGoalModal({ setIsOpen }) {
     const [isGoal, setIsGoal] = useState(false);
   
+    useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-71">
       <div className="relative max-w-[550px] w-[90%] sm:w-full mx-auto bg-white rounded-xl animate-slide-up sm:-translate-y-20">

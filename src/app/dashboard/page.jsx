@@ -19,6 +19,7 @@ import SkeletonSpendingCards from "../components/ui/SkeletonState/SkeletonSpendi
 import SkeletonDashboardGoalCard from "../components/ui/SkeletonState/SkeletonDashboardGoalCard";
 // Modal
 import SignOutModal from "../components/ui/Modals/SignOutModal";
+import SignUpModal from "../components/ui/Modals/SignUpModal";
 // Icon
 import { BsThreeDotsVertical } from "react-icons/bs";
 
@@ -38,7 +39,9 @@ export default function page() {
   const [usersSubscriptions, setUsersSubscriptions] = useState([]);
   const [usersGoals, setUsersGoals] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLogin, setIsLogin] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [budgetData, setBudgetData] = useState(null);
   const router = useRouter();
 
   function totalExpenses(items) {
@@ -63,57 +66,73 @@ export default function page() {
     );
   }
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        if (!user.displayName) {
-          router.push("/get-started");
-        } else {
-          async function getAllPosts() {
-            try {
-              async function getAllUserInfo(collectionName) {
-                const { docs } = await getDocs(
-                  collection(db, "users", user.uid, collectionName)
-                );
-                setUserDisplayName(user.displayName);
+  function surveyIncomeAfter() {
+    return (
+      budgetData?.income - budgetData?.billCost - budgetData?.subscriptionCost
+    );
+  }
 
-                if (collectionName === "expenses") {
-                  const userExpensesInfo = docs.map((elem) => elem.data());
-                  setUserExpenses(userExpensesInfo);
-                } else if (collectionName === "income") {
-                  const userIncomeInfo = docs.map((elem) => elem.data());
-                  setUserIncome(userIncomeInfo.map((item) => item.income));
-                } else if (collectionName === "bills") {
-                  const usersBillsInfo = docs.map((elem) => elem.data());
-                  setUsersBills(usersBillsInfo);
-                  setIsLoading(false);
-                } else if (collectionName === "subscriptions") {
-                  const usersSubscriptionsInfo = docs.map((elem) =>
-                    elem.data()
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("budgetSetup"));
+    if (data) {
+      setBudgetData(data);
+      setIsLoading(false);
+      setIsUserDisplayName(false)
+    } else {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          if (!user.displayName) {
+            router.push("/get-started");
+          } else {
+            async function getAllPosts() {
+              try {
+                async function getAllUserInfo(collectionName) {
+                  const { docs } = await getDocs(
+                    collection(db, "users", user.uid, collectionName)
                   );
-                  setUsersSubscriptions(usersSubscriptionsInfo);
-                  setIsLoading(false);
-                } else if (collectionName === "goals") {
-                  const usersGoalsInfo = docs.map((elem) => elem.data());
-                  setUsersGoals(usersGoalsInfo);
+                  setUserDisplayName(user.displayName);
+  
+                  if (collectionName === "expenses") {
+                    const userExpensesInfo = docs.map((elem) => elem.data());
+                    setUserExpenses(userExpensesInfo);
+                  } else if (collectionName === "income") {
+                    const userIncomeInfo = docs.map((elem) => elem.data());
+                    setUserIncome(userIncomeInfo.map((item) => item.income));
+                  } else if (collectionName === "bills") {
+                    const usersBillsInfo = docs.map((elem) => elem.data());
+                    setUsersBills(usersBillsInfo);
+                    setIsLoading(false);
+                  } else if (collectionName === "subscriptions") {
+                    const usersSubscriptionsInfo = docs.map((elem) =>
+                      elem.data()
+                    );
+                    setUsersSubscriptions(usersSubscriptionsInfo);
+                    setIsLoading(false);
+                  } else if (collectionName === "goals") {
+                    const usersGoalsInfo = docs.map((elem) => elem.data());
+                    setUsersGoals(usersGoalsInfo);
+                  }
                 }
+                getAllUserInfo("expenses");
+                getAllUserInfo("income");
+                getAllUserInfo("bills");
+                getAllUserInfo("subscriptions");
+                getAllUserInfo("goals");
+              } catch (err) {
+                console.error("Error fecthing user info", err);
               }
-              getAllUserInfo("expenses");
-              getAllUserInfo("income");
-              getAllUserInfo("bills");
-              getAllUserInfo("subscriptions");
-              getAllUserInfo("goals");
-            } catch (err) {
-              console.error("Error fecthing user info", err);
             }
+            getAllPosts();
+            setIsUserDisplayName(false);
+            setIsLogin(true)
           }
-          getAllPosts();
-          setIsUserDisplayName(false);
+        } else {
+          router.push("/get-started");
         }
-      } else {
-        router.push("/get-started");
-      }
-    });
+      });
+
+    }
+
   }, []);
   return (
     <>
@@ -139,31 +158,59 @@ export default function page() {
                   <SkeletonBox height={30} width={"100%"} />
                 ) : (
                   <>
-                    <div className="flex xl:block 2xl:flex justify-between items-center mb-3">
-                      <h2 className="text-lg font-extrabold text-[#2f4858]">
-                        Account
-                      </h2>
-                      <button className="relative  cursor-pointer" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                        <BsThreeDotsVertical className="text-2xl"/>
-                      <div className={`${isMenuOpen ? 'animate-fade-in' : 'hidden animate-fade-out'} absolute top-0 right-5 bg-[#00afa7] flex flex-col text-white w-40 py-2 rounded-md shadow-lg `}>
-    
-                        <button onClick={() => setIsOpen(true)} className="py-1.5 px-4 text-sm min-h-8 font-semibold hover:bg-[#00988f] transition-all duration-300 cursor-pointer">Sign Out</button>
-                        <Link href={'/dashboard/settings'} className="py-1.5 px-4 text-sm min-h-8 font-semibold hover:bg-[#00988f] transition-all duration-300">Account Settings</Link>
+                    {isLogin ? (
+                      <>
+                        <div className="flex  justify-between items-center mb-3">
+                          <h2 className="text-[20px] font-extrabold text-[#2f4858] mb-0 xl:mb-2 2xl:mb-0">
+                            Account
+                          </h2>
+                          <button
+                            className="relative  cursor-pointer"
+                            onClick={() => setIsMenuOpen(!isMenuOpen)}
+                          >
+                            <BsThreeDotsVertical className="text-2xl" />
+                            <div
+                              className={`${
+                                isMenuOpen
+                                  ? "animate-fade-in"
+                                  : "hidden animate-fade-out"
+                              } absolute top-0 right-5 bg-[#00afa7] flex flex-col text-white w-40 py-2 rounded-md shadow-lg `}
+                            >
+                              <button
+                                onClick={() => setIsOpen(true)}
+                                className="py-1.5 px-4 text-sm min-h-8 font-semibold hover:bg-[#00988f] transition-all duration-300 cursor-pointer"
+                              >
+                                Sign Out
+                              </button>
+                              <Link
+                                href={"/dashboard/settings"}
+                                className="py-1.5 px-4 text-sm min-h-8 font-semibold hover:bg-[#00988f] transition-all duration-300"
+                              >
+                                Account Settings
+                              </Link>
+                            </div>
+                          </button>
+                        </div>
 
-
-  
+                        <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200">
+                          <p className="text-sm text-gray-500 mb-1">User</p>
+                          <h3 className="text-xl font-bold text-[#2f4858] truncate">
+                            {userDisplayName}
+                          </h3>
+                        </div>
+                        {isOpen && <SignOutModal setIsOpen={setIsOpen} />}
+                      </>
+                    ) : (
+                      <div className="flex xl:block 2xl:flex justify-between items-center mb-3">
+                        <h2 className="text-lg font-extrabold text-[#2f4858] mb-0 xl:mb-2 2xl:mb-0">
+                          Account
+                        </h2>
+                        <button onClick={() => setIsOpen(true)} className="text-white font-semibold py-2 px-4 bg-[#00afa7] hover:bg-[#00988f] rounded-lg transition-all duration-300 cursor-pointer text-center">
+                          Sign up
+                        </button>
+                        {isOpen && <SignUpModal onClose={setIsOpen} />}
                       </div>
-                      </button>
-                      {/* <button onClick={() => setIsOpen(true)} className="text-white font-semibold py-2 px-4 bg-[#00afa7] hover:bg-[#00988f] rounded-lg transition-all duration-300 cursor-pointer">Sign Out</button> */}
-                    </div>
-
-                    <div className="bg-gray-50 rounded-2xl p-4 border border-gray-200">
-                      <p className="text-sm text-gray-500 mb-1">User</p>
-                      <h3 className="text-xl font-bold text-[#2f4858] truncate">
-                        {userDisplayName}
-                      </h3>
-                    </div>
-                    {isOpen && <SignOutModal setIsOpen={setIsOpen} />}
+                    )}
                   </>
                 )}
               </div>
@@ -183,6 +230,9 @@ export default function page() {
                         totalSpendings={totalSpendings}
                         userExpenses={userExpenses}
                         isLoading={isLoading}
+                        isLogin={isLogin}
+                        budgetData={budgetData}
+                        surveyIncomeAfter={surveyIncomeAfter}
                       />
                       {isLoading ? (
                         <SkeletonBox
@@ -194,9 +244,12 @@ export default function page() {
                         <div className="ml-4">
                           <div className="text-xl font-semibold text-[#2f4858]">
                             $
-                            {(
-                              incomeAfter() + totalSpendings(userExpenses)
-                            ).toLocaleString()}
+                            {isLogin
+                              ? (
+                                  incomeAfter() + totalSpendings(userExpenses)
+                                ).toLocaleString()
+                              : surveyIncomeAfter() - budgetData?.expenseCost ||
+                                0}
                           </div>
                           <div className="text-sm">Avaliable</div>
                         </div>
@@ -213,11 +266,19 @@ export default function page() {
                         <SkeletonSpendingCards spendingCards={4} />
                       ) : (
                         <>
-                          {userExpenses.length < 1 && <AddPlannedSpendings />}
+                          {isLogin ? (
+                            <>
+                              {userExpenses.length < 1 && (
+                                <AddPlannedSpendings />
+                              )}
 
-                          {userExpenses.map((expense, id) => (
-                            <SpendingsCard expense={expense} key={id} />
-                          ))}
+                              {userExpenses.map((expense, id) => (
+                                <SpendingsCard expense={expense} key={id} />
+                              ))}
+                            </>
+                          ) : (
+                            <SpendingsCard budgetData={budgetData} />
+                          )}
                         </>
                       )}
                     </div>
@@ -235,12 +296,20 @@ export default function page() {
                     <SkeletonBillCards billCards={4} />
                   ) : (
                     <>
-                      {usersBills.length < 1 && (
-                        <AddSubscriptionBillCard title={"Bill"} />
+                      {isLogin ? (
+                        <>
+                          {usersBills.slice(0, 4).map((bill, id) => (
+                            <BillsCard key={id} bill={bill} />
+                          ))}
+                          {usersBills.length < 1 && (
+                            <AddSubscriptionBillCard title={"Bill"} />
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <BillsCard budgetDataBill={budgetData} />
+                        </>
                       )}
-                      {usersBills.slice(0, 4).map((bill, id) => (
-                        <BillsCard key={id} bill={bill} />
-                      ))}
                     </>
                   )}
                 </div>
@@ -256,17 +325,25 @@ export default function page() {
                     <SkeletonBillCards billCards={4} />
                   ) : (
                     <>
-                      {usersSubscriptions.length < 1 && (
-                        <AddSubscriptionBillCard title={"Subscriptions"} />
+                      {isLogin ? (
+                        <>
+                          {usersSubscriptions.length < 1 && (
+                            <AddSubscriptionBillCard title={"Subscriptions"} />
+                          )}
+                          {usersSubscriptions
+                            .slice(0, 4)
+                            .map((subscription, id) => (
+                              <SubscriptionsCard
+                                key={id}
+                                subscription={subscription}
+                              />
+                            ))}
+                        </>
+                      ) : (
+                        <>
+                          <BillsCard budgetDataSubscription={budgetData} />
+                        </>
                       )}
-                      {usersSubscriptions
-                        .slice(0, 4)
-                        .map((subscription, id) => (
-                          <SubscriptionsCard
-                            key={id}
-                            subscription={subscription}
-                          />
-                        ))}
                     </>
                   )}
                 </div>
@@ -283,10 +360,16 @@ export default function page() {
                     <SkeletonDashboardGoalCard goalCards={2} />
                   ) : (
                     <>
-                      {usersGoals.slice(0, 2).map((goal, id) => (
-                        <DashboardGoalCard key={id} goal={goal} />
-                      ))}
-                      {usersGoals.length < 2 && <CreateGoalCard />}
+                      {isLogin ? (
+                        <>
+                          {usersGoals.slice(0, 2).map((goal, id) => (
+                            <DashboardGoalCard key={id} goal={goal} />
+                          ))}
+                          {usersGoals.length < 2 && <CreateGoalCard />}
+                        </>
+                      ) : (
+                        <DashboardGoalCard budgetData={budgetData} />
+                      )}
                     </>
                   )}
                 </div>

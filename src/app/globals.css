@@ -11,6 +11,10 @@ body {
   overflow-y: hidden;
 }
 
+@theme {
+  --breakpoint-xs: 580px;
+}
+
 .separator {
   display: flex;
   align-items: center;

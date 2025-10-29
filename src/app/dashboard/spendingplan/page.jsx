@@ -9,6 +9,7 @@ import PlannedSpendingCard from "../../components/PlannedSendingCard";
 import AddExpenseModal from "../../components/ui/Modals/AddExpensesModal";
 import FinancePieChart from "../../components/FinancePieChart";
 import Header from "../../components/Header";
+import SignUpModal from "../../components/ui/Modals/SignUpModal";
 // Firebase
 import { auth, db } from "../../firebase";
 import { addDoc, collection, onSnapshot } from "firebase/firestore";
@@ -35,16 +36,10 @@ export default function page() {
     amount: 0,
   });
   const [errorMessage, setErrorMessage] = useState("");
-  const router = useRouter();
+  const [budgetData, setBudgetData] = useState(null);
+  const [isLogin, setIsLogin] = useState(false);
 
-  const toggleModal = () => {
-    if (isOpen) {
-      setIsOpen(false)
-      return document.body.classList.remove("no-scroll")
-    }
-    setIsOpen(true)
-    document.body.classList += " no-scroll"
-  }
+  const router = useRouter();
 
   function totalExpenses(items) {
     const total = items.reduce(
@@ -52,6 +47,12 @@ export default function page() {
       0
     );
     return total;
+  }
+
+  function surveyIncomeAfter() {
+    return (
+      budgetData?.income - budgetData?.billCost - budgetData?.subscriptionCost
+    );
   }
 
   function totalSpendings(items) {
@@ -147,23 +148,35 @@ export default function page() {
   }
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        if (!user.displayName) {
-          router.push("/get-started");
+    const data = JSON.parse(localStorage.getItem("budgetSetup"));
+    if (data) {
+      setBudgetData(data);
+      setIsLoading(false);
+      setIsUserDisplayName(false);
+    } else {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          if (!user.displayName) {
+            router.push("/get-started");
+          } else {
+            listenToCollection(user, "expenses");
+            listenToCollection(user, "bills");
+            listenToCollection(user, "subscriptions");
+            listenToCollection(user, "income");
+            listenToCollection(user, "goals");
+            setIsLoading(false);
+            setIsUserDisplayName(false);
+            setIsLogin(true);
+          }
         } else {
-          listenToCollection(user, "expenses");
-          listenToCollection(user, "bills");
-          listenToCollection(user, "subscriptions");
-          listenToCollection(user, "income");
-          listenToCollection(user, "goals");
-          setIsLoading(false);
-          setIsUserDisplayName(false);
+          router.push("/get-started");
         }
-      } else {
-        router.push("/get-started");
-      }
-    });
+      });
+    }
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
   }, []);
 
   return (
@@ -175,19 +188,21 @@ export default function page() {
       ) : (
         <>
           <Sidebar />
-          <Header title={"Spending Plan"}/>
+          <Header title={"Spending Plan"} />
           <main className="bg-[#f1f5f9] h-screen px-4 py-10 mt-5 lg:mt-0 lg:ml-[70px] transition-all duration-500 no-scroll">
             <div className="flex flex-col-reverse md:flex-row gap-4 space-x-4">
               <div className="md:w-[40%] lg:w-[20%] flex items-center flex-col space-y-6">
                 <MonthlySpendsCard
                   title={"Income after bills & savings"}
                   incomeAfter={incomeAfter()}
+                  budgetData={budgetData}
                   active={selectedCard === "income"}
                   onClick={() => setSelectedCard("income")}
                 />
 
                 <MonthlySpendsCard
                   title={"Planned spendings"}
+                  budgetDataExpense={budgetData?.expenseCost}
                   incomeAfter={totalSpendings(userExpenses)}
                   active={selectedCard === "planned"}
                   onClick={() => setSelectedCard("planned")}
@@ -201,7 +216,11 @@ export default function page() {
                         : ""
                     }`}
                   >
-                    {formatMoney(incomeAfter() + totalSpendings(userExpenses))}
+                    {formatMoney(
+                      incomeAfter() + totalSpendings(userExpenses) ||
+                        surveyIncomeAfter() - budgetData?.expenseCost ||
+                        0
+                    )}
                   </div>
                   <div className="text-center">avaliable</div>
                 </div>
@@ -211,6 +230,9 @@ export default function page() {
                   totalSpendings={totalSpendings}
                   userExpenses={userExpenses}
                   isLoading={isLoading}
+                  isLogin={isLogin}
+                  budgetData={budgetData}
+                  surveyIncomeAfter={surveyIncomeAfter}
                 />
               </div>
               {/* Income tab */}
@@ -218,16 +240,21 @@ export default function page() {
                 <div className="border-2 rounded-2xl border-gray-200 md:w-[60%] lg:w-[80%] py-5 px-3">
                   <CollapsibleIncome
                     isLoading={isLoading}
+                    budgetDataIncome={budgetData?.income}
                     income={userIncome.map((item) => item.income)}
                     userIncomeId={userIncome.map((item) => item.id)}
+                    isLogin={isLogin}
                   />
 
                   <CollapsibleSpentCard
                     title="Bills"
                     subTitle={"List your bills"}
                     items={usersBills}
+                    budgetDataBill={budgetData?.bill}
+                    budgetDataBillCost={budgetData?.billCost}
                     modalTitle={"Delete Bill"}
                     collectionName={"bills"}
+                    isLogin={isLogin}
                   />
                   <CollapsibleSpentCard
                     title="Subscriptions"
@@ -235,6 +262,9 @@ export default function page() {
                     modalTitle={"Delete Subscriptions"}
                     collectionName={"subscriptions"}
                     items={usersSubscriptions}
+                    budgetDataSubscription={budgetData?.subscription}
+                    budgetDataSubscriptionCost={budgetData?.subscriptionCost}
+                    isLogin={isLogin}
                   />
                   <CollapsibleSpentCard
                     title="Savings Goal"
@@ -242,6 +272,9 @@ export default function page() {
                     modalTitle={"Delete Goal"}
                     collectionName={"goals"}
                     items={usersGoals}
+                    budgetDataGoal={budgetData?.goal}
+                    budgetDataGoalCost={budgetData?.goalCost}
+                    isLogin={isLogin}
                   />
 
                   <div className="mt-6 border-t-3 border-gray-200 pt-3 flex justify-between pr-3">
@@ -249,7 +282,16 @@ export default function page() {
                       Income after bills & savings
                     </div>
                     <div className="md:text-lg font-semibold">
-                      ${incomeAfter().toLocaleString()}
+                      $
+                      {isLogin ? (
+                        incomeAfter().toLocaleString()
+                      ) : (
+                        <>
+                          {isLoading
+                            ? "0.00"
+                            : surveyIncomeAfter().toLocaleString()}
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -266,13 +308,26 @@ export default function page() {
                   <div className="text-xl font-semibold mb-6">
                     Planned spendings
                   </div>
-                  {userExpenses.map((expense) => (
-                    <PlannedSpendingCard key={expense.id} expense={expense} />
-                  ))}
+                  {isLogin ? (
+                    <>
+                      {userExpenses.map((expense) => (
+                        <PlannedSpendingCard
+                          key={expense.id}
+                          expense={expense}
+                          isLogin={true}
+                        />
+                      ))}
+                    </>
+                  ) : (
+                    <PlannedSpendingCard
+                      isLogin={isLogin}
+                      budgetData={budgetData}
+                    />
+                  )}
 
                   <div
                     className="border-2 border-gray-300 rounded-[10px] my-2 py-5 px-2 sm:px-4 flex items-center gap-2 cursor-pointer"
-                    onClick={toggleModal}
+                    onClick={() => setIsOpen(true)}
                   >
                     <div className="text-3xl text-[#00afa7]">
                       <LuCirclePlus />
@@ -283,36 +338,42 @@ export default function page() {
                   </div>
 
                   {isOpen && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-71 ">
-                      <div className="relative max-w-[550px] w-[95%] mx-auto bg-white rounded-xl animate-slide-up -translate-y-20">
-                        <div className="flex justify-between items-center p-4 bg-gray-200 rounded-t-xl">
-                          <div className="text-lg">Add expense</div>
-                          <button
-                            className="rounded-full text-2xl cursor-pointer"
-                            onClick={() => setIsOpen(!isOpen)}
-                          >
-                            <IoMdClose />
-                          </button>
-                        </div>
-                        <div className="flex py-6">
-                          <div className="w-[20%] flex justify-center">
-                            <FcCalculator className="text-5xl" />
+                    <>
+                      {isLogin ? (
+                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-71 ">
+                          <div className="relative max-w-[550px] w-[95%] mx-auto bg-white rounded-xl animate-slide-up -translate-y-20">
+                            <div className="flex justify-between items-center p-4 bg-gray-200 rounded-t-xl">
+                              <div className="text-lg">Add expense</div>
+                              <button
+                                className="rounded-full text-2xl cursor-pointer"
+                                onClick={() => setIsOpen(!isOpen)}
+                              >
+                                <IoMdClose />
+                              </button>
+                            </div>
+                            <div className="flex py-6">
+                              <div className="w-[20%] flex justify-center">
+                                <FcCalculator className="text-5xl" />
+                              </div>
+                              <div className="w-[80%]">
+                                <AddExpenseModal
+                                  selected={selected}
+                                  setExpense={setExpense}
+                                  expense={expense}
+                                  open={open}
+                                  setOpen={setOpen}
+                                  setSelected={setSelected}
+                                  errorMessage={errorMessage}
+                                  handleSubmit={handleSubmit}
+                                />
+                              </div>
+                            </div>
                           </div>
-                          <div className="w-[80%]">
-                            <AddExpenseModal
-                              selected={selected}
-                              setExpense={setExpense}
-                              expense={expense}
-                              open={open}
-                              setOpen={setOpen}
-                              setSelected={setSelected}
-                              errorMessage={errorMessage}
-                              handleSubmit={handleSubmit}
-                            />
-                          </div>
                         </div>
-                      </div>
-                    </div>
+                      ) : (
+                        <SignUpModal onClose={setIsOpen} />
+                      )}
+                    </>
                   )}
                 </div>
               )}

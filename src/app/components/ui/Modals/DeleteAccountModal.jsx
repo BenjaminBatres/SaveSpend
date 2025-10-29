@@ -1,5 +1,5 @@
 import { deleteUser } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
 
@@ -26,6 +26,12 @@ export default function DeleteAccountModal({setIsModalOpen, user}) {
       error: "Something went wrong while deleting your account.",
     });
   };
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
   return (
       <div className="fixed inset-0 bg-black/30 z-71 flex justify-center items-center">
         <Toaster />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import IncomeInput from "../Inputs/IncomeInput";
 import { doc, updateDoc } from "firebase/firestore";
@@ -27,6 +27,12 @@ export default function UpdateIncomeModal({ setIsModalOpen, userIncomeId }) {
     }
   }
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-73">
       <div className="bg-white rounded-2xl shadow-2xl w-[90%] max-w-md p-6 animate-slide-up -translate-y-30">

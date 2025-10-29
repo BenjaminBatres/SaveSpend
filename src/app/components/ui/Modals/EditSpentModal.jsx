@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { auth, db } from "../../../firebase";
 import { IoMdClose } from "react-icons/io";
@@ -34,6 +34,12 @@ export default function EditSpentModal({
     }
   }
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
   if (!isOpen) return null; // Don't render when modal is closed
 
   return (

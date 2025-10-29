@@ -1,11 +1,13 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 // Components
 import SidebarGroup from "./SidebarGroup";
 import SidebarIcon from "./SidebarIcon";
 import BottomSidebarIcons from "../Sidebar/BottomSidebarIcons";
+import SignOutModal from "../Modals/SignOutModal";
+import SignUpModal from "../Modals/SignUpModal";
 // Icons
 import Logo from "../../../assets/SaveSpend-logo.png";
 import { LuLayoutDashboard } from "react-icons/lu";
@@ -14,11 +16,14 @@ import { GoGoal } from "react-icons/go";
 import { RiChatAiLine } from "react-icons/ri";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoMdClose } from "react-icons/io";
-import SignOutModal from "../Modals/SignOutModal";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../../firebase";
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(false)
+  
   const groups = [
     {
       icons: [LuLayoutDashboard],
@@ -32,6 +37,13 @@ export default function Sidebar() {
     },
   ];
 
+   useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+          setIsLogin(true)
+      }
+    })
+  }, [])
   return (
     <>
       <div className="hidden lg:flex flex-col fixed left-0 top-0 z-70 h-full lg:w-[70px] pt-4 pb-16 shadow-xl ">
@@ -46,7 +58,7 @@ export default function Sidebar() {
             links={group.links}
           />
         ))}
-        <BottomSidebarIcons />
+        <BottomSidebarIcons isLogin={isLogin} setIsOpen={setIsOpen}/>
       </div>
 
       {/* Mobile Topbar */}
@@ -82,10 +94,19 @@ export default function Sidebar() {
               />
             ))
           )}
-          <BottomSidebarIcons setIsOpen={setIsOpen} />
+          <BottomSidebarIcons isLogin={isLogin} setIsOpen={setIsOpen} />
         </div>
       </div>
-      {isOpen && <SignOutModal setIsOpen={setIsOpen} />}
+      {isLogin ? (
+        <>
+        {isOpen && <SignOutModal setIsOpen={setIsOpen} />}
+        </>
+      ) : (
+         <>
+        {isOpen && <SignUpModal onClose={setIsOpen} />}
+        </>
+      )}
+      
       {open && (
         <div
           className="lg:hidden fixed inset-0 bg-black opacity-50 z-30"

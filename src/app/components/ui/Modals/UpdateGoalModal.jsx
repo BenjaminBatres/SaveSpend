@@ -1,5 +1,5 @@
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { auth, db } from "../../../firebase";
 
@@ -47,6 +47,13 @@ export default function UpdateGoalModal({ isOpen, setIsOpen, selectedGoal }) {
     setIsOpen(false);
     setError("");
   }
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, []);
 
   if (!isOpen) return null; // Don't render when modal is closed
   return (
