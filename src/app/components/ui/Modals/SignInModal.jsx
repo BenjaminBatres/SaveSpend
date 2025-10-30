@@ -77,7 +77,7 @@ export default function SignInModal({ onClose }) {
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="bg-white p-8 rounded-2xl shadow-lg w-[90%] max-w-md -translate-y-20 relative"
+        className="bg-white p-8 rounded-2xl shadow-lg w-[90%] max-w-md sm:-translate-y-20 relative"
       >
         <h2 className="text-2xl font-bold text-[#2f4858] mb-4">Sign In</h2>
 

@@ -30,10 +30,10 @@ export default function page() {
         <Image
           src={CompletedImage}
           alt="Completed"
-          className="w-72 mx-auto"
+          className="w-50 sm:w-72 mx-auto"
           priority
         />
-        <div className="mx-auto w-full max-w-100 fixed bottom-0 left-0 right-0 z-10">
+        <div className="mx-auto w-full max-w-100 sm:fixed bottom-0 left-0 right-0 z-10">
           <div className="flex flex-col px-4 py-6 bg-transparent">
             <button
               onClick={() => router.push("/dashboard")}

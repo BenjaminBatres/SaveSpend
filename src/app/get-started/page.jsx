@@ -319,7 +319,7 @@ export default function page() {
           ) : (
             <>
               <header className="h-20 flex items-center justify-between sm:py-11 px-6 border-b-2 border-gray-200">
-                <div></div>
+                <div className="hidden md:block"></div>
                 <Link
                   href={"/"}
                   className=" text-4xl sm:text-6xl text-[#00bf91] tracking-tighter "

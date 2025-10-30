@@ -209,7 +209,7 @@ export default function page() {
         </div>
       </div>
       {steps[step - 1]?.key !== "expense" && (
-        <div className="-z-20 fixed bottom-0 right-0 ">
+        <div className="hidden sm:block -z-20 fixed bottom-0 right-0 ">
           <Image
             src={BottomImage}
             alt=""
