@@ -151,10 +151,7 @@ export default function page() {
     window.location.href = "/get-started/quote";
   }
   if (step === 10) {
-    // once doen add form data into local storage
     localStorage.setItem("budgetSetup", JSON.stringify(form))
-    // fix subscription name
-    console.log(form)
     window.location.href = "/quiz/completion";
   }
 
@@ -162,7 +159,7 @@ export default function page() {
     const currentKey = steps[step - 1].key;
     setForm((prev) => ({ ...prev, [currentKey]: value }));
     let num = 0;
-    const stopTimer = setInterval(timer, 1000);
+    const stopTimer = setInterval(timer, 500);
     function timer() {
       num++;
       if (num >= 2) {

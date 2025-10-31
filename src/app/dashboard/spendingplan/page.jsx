@@ -185,9 +185,9 @@ export default function page() {
         <>
           <Sidebar />
           <Header title={"Spending Plan"} />
-          <main className="bg-[#f1f5f9] h-screen px-4 py-10 mt-5 lg:mt-0 lg:ml-[70px] transition-all duration-500 no-scroll">
+          <main className="bg-[#f1f5f9] md:h-screen px-4 py-10 mt-5 lg:mt-0 lg:ml-[70px] transition-all duration-500 no-scroll">
             <div className="flex flex-col-reverse md:flex-row gap-4 space-x-4">
-              <div className="md:w-[40%] lg:w-[20%] flex items-center flex-col space-y-6">
+              <div className="md:w-[40%] lg:w-[20%] flex items-center flex-col space-y-6 mb-5 md:mb-0">
                 <MonthlySpendsCard
                   title={"Income after bills & savings"}
                   incomeAfter={incomeAfter()}
