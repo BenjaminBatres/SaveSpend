@@ -181,7 +181,7 @@ export default function SplitSignUp({ onClose }) {
             <IoMdClose className="text-gray-500 hover:text-gray-700 rounded-full text-2xl cursor-pointer" />
           </button>
           <div className="separator">
-            <span className="pr-2 pl-[7px] text-sm">
+            <span className="pr-2 pl-[7px] text-sm text-black">
               {isLogin ? "New to SaveSpend?" : "Already have an account?"}
             </span>
           </div>
