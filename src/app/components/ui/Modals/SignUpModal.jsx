@@ -14,7 +14,6 @@ export default function SplitSignUp({ onClose }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isLogin, setIsLogin] = useState(false);
-  const router = useRouter();
   const [user, setUser] = useState({});
   const [formData, setFormData] = useState({
     email: "",
