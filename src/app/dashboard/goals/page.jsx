@@ -84,7 +84,7 @@ export default function page() {
                   {isLogin ? (
                     <>
                       {userGoals.map((goal) => (
-                        <GoalCard goal={goal} key={goal.id} />
+                        <GoalCard goal={goal} key={goal.id} isLogin={isLogin}/>
                       ))}
                     </>
                   ) : (

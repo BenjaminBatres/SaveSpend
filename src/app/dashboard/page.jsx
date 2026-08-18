@@ -47,7 +47,7 @@ export default function page() {
   function totalExpenses(items) {
     const total = items.reduce(
       (acc, item) => acc + parseFloat(item.cost || item.savedSoFar),
-      0
+      0,
     );
     return total;
   }
@@ -77,7 +77,7 @@ export default function page() {
     if (data) {
       setBudgetData(data);
       setIsLoading(false);
-      setIsUserDisplayName(false)
+      setIsUserDisplayName(false);
     } else {
       onAuthStateChanged(auth, (user) => {
         if (user) {
@@ -88,10 +88,10 @@ export default function page() {
               try {
                 async function getAllUserInfo(collectionName) {
                   const { docs } = await getDocs(
-                    collection(db, "users", user.uid, collectionName)
+                    collection(db, "users", user.uid, collectionName),
                   );
                   setUserDisplayName(user.displayName);
-  
+
                   if (collectionName === "expenses") {
                     const userExpensesInfo = docs.map((elem) => elem.data());
                     setUserExpenses(userExpensesInfo);
@@ -104,7 +104,7 @@ export default function page() {
                     setIsLoading(false);
                   } else if (collectionName === "subscriptions") {
                     const usersSubscriptionsInfo = docs.map((elem) =>
-                      elem.data()
+                      elem.data(),
                     );
                     setUsersSubscriptions(usersSubscriptionsInfo);
                     setIsLoading(false);
@@ -124,15 +124,13 @@ export default function page() {
             }
             getAllPosts();
             setIsUserDisplayName(false);
-            setIsLogin(true)
+            setIsLogin(true);
           }
         } else {
           router.push("/get-started");
         }
       });
-
     }
-
   }, []);
   return (
     <>
@@ -205,7 +203,10 @@ export default function page() {
                         <h2 className="text-lg font-extrabold text-[#2f4858] mb-0 xl:mb-2 2xl:mb-0">
                           Account
                         </h2>
-                        <button onClick={() => setIsOpen(true)} className="text-white font-semibold py-2 px-4 bg-[#00afa7] hover:bg-[#00988f] rounded-lg transition-all duration-300 cursor-pointer text-center">
+                        <button
+                          onClick={() => setIsOpen(true)}
+                          className="text-white font-semibold py-2 px-4 bg-[#00afa7] hover:bg-[#00988f] rounded-lg transition-all duration-300 cursor-pointer text-center"
+                        >
                           Sign up
                         </button>
                         {isOpen && <SignUpModal onClose={setIsOpen} />}

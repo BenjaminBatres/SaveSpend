@@ -147,7 +147,7 @@ export default function BillsInput({
       {bills.length > 0 && (
         <button
           onClick={validateAndSave}
-          className="mt-4 bg-[#00bf91] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#009b77] transition"
+          className="mt-4 bg-[#00bf91] text-white font-semibold py-2 px-4 rounded-lg hover:bg-[#009b77] transition cursor-pointer"
         >
           Save Bills
         </button>

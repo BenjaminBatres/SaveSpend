@@ -2,7 +2,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import SignUpImage from "../../../assets/undraw_secure-login_m11a.svg";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { getFirebaseErrorMessage} from "../getFirebaseErrorMessage"
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -19,6 +19,8 @@ export default function SplitSignUp({ onClose }) {
     email: "",
     password: "",
   });
+
+
   const [touched, setTouched] = useState({});
 
   const isValidEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -84,8 +86,10 @@ export default function SplitSignUp({ onClose }) {
         const stopTimer2 = setInterval(timer2, 1500);
       }
     } catch (err) {
+      setMessage(getFirebaseErrorMessage(err))
+    }
+    finally {
       setLoading(false);
-      setMessage("No user found. Please try again");
     }
   };
 
